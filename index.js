@@ -233,7 +233,7 @@ async function runAll(initialRun = true) {
 
       console.log(
         (await import('chalk')).default.green(
-          `[${new Date().toISOString()}] Connection Start: 
+          `[${new Date().toISOString()}]  Connection Start: 
             nodeId: ${nodeId}, 
             hardwareId: ${hardwareId}, 
             token: ${token}`
