@@ -231,19 +231,21 @@ async function runAll(initialRun = true) {
       const { nodeId, hardwareId } = ids[i]
       const token = tokens.length === 1 ? tokens[0] : tokens[i]
 
+      const proxy = useProxy ? proxies[i] : null
+      const ipAddress = useProxy
+        ? await fetchIpAddress(await loadFetch(), proxy ? new HttpsProxyAgent(proxy) : null)
+        : null
+
       console.log(
         (await import('chalk')).default.green(
           `[${new Date().toISOString()}]  Connection Start: 
             nodeId: ${nodeId}, 
             hardwareId: ${hardwareId}, 
-            token: ${token}`
+            token: ${token},
+            proxy: ${proxy}, 
+            ipAddress: ${ipAddress} `
         )
       )
-
-      const proxy = useProxy ? proxies[i] : null
-      const ipAddress = useProxy
-        ? await fetchIpAddress(await loadFetch(), proxy ? new HttpsProxyAgent(proxy) : null)
-        : null
       processNode(nodeId, hardwareId, proxy, ipAddress, token)
     }
   } catch (error) {
