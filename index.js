@@ -229,12 +229,22 @@ async function runAll(initialRun = true) {
 
     for (let i = 0; i < ids.length; i++) {
       const { nodeId, hardwareId } = ids[i]
+      const token = tokens.length === 1 ? tokens[0] : tokens[i]
+
+      console.log(
+        (await import('chalk')).default.green(
+          `[${new Date().toISOString()}] Connection Start: 
+            nodeId: ${nodeId}, 
+            hardwareId: ${hardwareId}, 
+            token: ${token}`
+        )
+      )
+
       const proxy = useProxy ? proxies[i] : null
       const ipAddress = useProxy
         ? await fetchIpAddress(await loadFetch(), proxy ? new HttpsProxyAgent(proxy) : null)
         : null
-
-      processNode(nodeId, hardwareId, proxy, ipAddress, tokens.length === 1 ? tokens[0] : tokens[i])
+      processNode(nodeId, hardwareId, proxy, ipAddress, token)
     }
   } catch (error) {
     const chalk = await import('chalk')
